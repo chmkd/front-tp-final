@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ../front-tp-final/frontend/
+    container_name: image-front-final
+    restart: unless-stopped
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../front-tp-final/frontend/:/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+
+  ollama-backend:
+    image: relaximus/mistral-ollama
+    container_name: ollama-front
+    environment:
+      - OLLAMA_ORIGINS=*
+      - OLLAMA_HOST=0.0.0.0:11434
+    restart: unless-stopped
+    networks:
+      - app-network
+    expose:
+      - "11434"
+    ports:
+      - "11434:11434"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ollama.rule=Host(`backend.localhost`)"
+      - "traefik.http.services.ollama.loadbalancer.server.port=11434"
+
+  traefik:
+    image: traefik:v2.9
+    container_name: traefik-service
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8081:8081"
+    networks:
+      - app-network
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+networks:
+  app-network:
+    driver: bridge
