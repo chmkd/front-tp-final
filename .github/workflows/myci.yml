@@ -8,7 +8,7 @@ on:
 env:
   github.actor: chmkd
   github.repository_owner: chmkd
-  secrets.GITHUB_TOKEN: 050693
+  secrets.GITHUB_TOKEN: Jesus&00&44&56
 
 jobs:
   build-and-push:
