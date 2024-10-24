@@ -31,26 +31,25 @@ jobs:
       - name: List current directory
         run: ls -al  # Affiche tous les fichiers et répertoires dans le répertoire actuel
 
-      - name: List compose-tp-final directory
-        run: ls -al ../compose-tp-final || echo "compose-tp-final not found"  # Affiche le contenu ou un message d'erreur
-
       - name: Setup Docker Compose
         run: sudo apt-get update && sudo apt-get install docker-compose -y
 
+      # Construire et démarrer les services Docker Compose
       - name: Build and start services
-        working-directory: ./compose-tp-final  # Si le chemin est confirmé, cette étape fonctionnera
         run: docker-compose up --build -d
 
+      # Tester l'API Flask
       - name: Test Flask API
         run: |
           sleep 15
           curl --fail http://localhost:5000 || exit 1
 
+      # Tester l'API Ollama
       - name: Test Ollama API
         run: |
           sleep 15
           curl --fail http://localhost:11434 || exit 1
 
+      # Arrêter les services Docker Compose
       - name: Shutdown Docker Compose
-        working-directory: ./compose-tp-final  # Même chemin pour docker-compose
         run: docker-compose down
