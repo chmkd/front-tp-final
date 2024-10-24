@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-env:
-  github.actor: chmkd
-  github.repository_owner: chmkd
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -24,11 +20,11 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ env.github.actor }}
-          password: ${{ env.secrets.TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ghcr.io/${{ env.github.repository_owner }}/back:latest
+          tags: ghcr.io/${{ github.repository_owner }}/back:latest
