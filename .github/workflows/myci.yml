@@ -38,7 +38,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install docker-compose -y
 
       - name: Build and start services
-        working-directory: ./compose-tp-final  # Si le chemin est confirmé, cette étape fonctionnera
+        working-directory: ../compose-tp-final  # Si le chemin est confirmé, cette étape fonctionnera
         run: docker-compose up --build -d
 
       - name: Test Flask API
@@ -52,5 +52,5 @@ jobs:
           curl --fail http://localhost:11434 || exit 1
 
       - name: Shutdown Docker Compose
-        working-directory: ./compose-tp-final  # Même chemin pour docker-compose
+        working-directory: ../compose-tp-final  # Même chemin pour docker-compose
         run: docker-compose down
