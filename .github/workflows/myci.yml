@@ -41,13 +41,13 @@ jobs:
       # Tester l'API Flask
       - name: Test Flask API
         run: |
-          sleep 15
+          sleep 60
           curl --fail http://localhost:5000 || exit 1
 
       # Tester l'API Ollama
       - name: Test Ollama API
         run: |
-          sleep 15
+          sleep 60
           curl --fail http://localhost:11434 || exit 1
 
       # Arrêter les services Docker Compose
