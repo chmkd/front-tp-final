@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+env: 
+  github.actor: ChMkd
+  github.repository_owner: ChMkd
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
