@@ -1,34 +1,43 @@
-name: Build and Push Docker Image
+name: CI Pipeline
 
 on:
   push:
     branches:
       - main
-
-env:
-  github.actor: chmkd
-  github.repository_owner: chmkd
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
 
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+        ports:
+          - 80:80
+          - 5000:5000
+          - 11434:11434
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # Étape de diagnostic pour lister les fichiers et répertoires actuels
+      - name: List current directory
+        run: ls -al  # Affiche tous les fichiers et répertoires dans le répertoire actuel
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ env.github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Docker Compose
+        run: sudo apt-get update && sudo apt-get install docker-compose -y
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: ghcr.io/${{ env.github.repository_owner }}/back:latest
+      # Construire et démarrer les services Docker Compose
+      - name: Build and start services
+        run: docker-compose up --build -d
+
+      # Arrêter les services Docker Compose
+      - name: Shutdown Docker Compose
+        run: docker-compose down
