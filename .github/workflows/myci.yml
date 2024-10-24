@@ -8,6 +8,7 @@ on:
 env: 
   github.actor: chmkd
   github.repository_owner: chmkd
+  github.password: Jesus&00&44&56
 
 jobs:
   build-and-push:
@@ -24,8 +25,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ env.github.actor }}
+          password: ${{ env.github.password }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
