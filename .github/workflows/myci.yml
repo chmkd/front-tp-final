@@ -32,7 +32,7 @@ jobs:
         run: ls -al  # Affiche tous les fichiers et répertoires dans le répertoire actuel
 
       - name: List compose-tp-final directory
-        run: ls -al ./compose-tp-final || echo "compose-tp-final not found"  # Affiche le contenu ou un message d'erreur
+        run: ls -al ../compose-tp-final || echo "compose-tp-final not found"  # Affiche le contenu ou un message d'erreur
 
       - name: Setup Docker Compose
         run: sudo apt-get update && sudo apt-get install docker-compose -y
