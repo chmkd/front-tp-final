@@ -5,30 +5,30 @@ on:
     branches:
       - main
 
+env: 
+  github.actor: chmkd
+  github.repository_owner: chmkd
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape pour cloner le dépôt
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Configuration de Docker Buildx pour des images multi-architecture
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Connexion au registre GitHub Container Registry
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}  # Utilisation automatique du nom d'utilisateur qui déclenche l'action
-          password: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token, automatiquement fourni
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Construction et push de l'image Docker
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/back:latest  # Utilisation du propriétaire du dépôt
+          tags: ghcr.io/${{ github.repository_owner }}/back:latest
