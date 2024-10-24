@@ -31,7 +31,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install docker-compose -y
 
       - name: Build and start services
-        working-directory: ./compose-tp-final  # Assure-toi que ce chemin est correct
+        working-directory: ./frontend-backend  # Assure-toi que ce chemin est correct
         run: docker-compose up --build -d
 
       - name: Test Flask API
